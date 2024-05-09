@@ -40,5 +40,6 @@ const handleLogin = async () => {
         />
       </div>
     </div>
+    <button class="signin">Sign in</button> 
   </form>
 </template>
