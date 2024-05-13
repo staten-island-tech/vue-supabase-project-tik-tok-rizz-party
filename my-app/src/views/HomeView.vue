@@ -1,9 +1,11 @@
 <script setup>
+import SignupPage from '@/components/SignupPage.vue';
+
 
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <SignupPage />
   </main>
 </template>
