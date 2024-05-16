@@ -22,12 +22,8 @@ const handleLogin = async () => {
   }
 }
 
-export default {
-  methods: {
-    goToLogin() {
-      this.$router.push('/login')
-    },
-  },
+
+
 
 </script>
 
@@ -48,8 +44,14 @@ export default {
         />
       </div>
     </div>
-    <button @click="switchlink" class="loginclick">Login</button>
+   
   </form>
+
+  <p>Already have an account?
+    <router-link to="/login">Log In</router-link>
+  </p>
+
+
 
 
 
