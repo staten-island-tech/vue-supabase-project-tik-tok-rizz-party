@@ -21,6 +21,10 @@ const handleLogin = async () => {
     loading.value = false
   }
 }
+
+
+
+
 </script>
 
 <template>
@@ -40,5 +44,15 @@ const handleLogin = async () => {
         />
       </div>
     </div>
+   
   </form>
+
+  <p>Already have an account?
+    <router-link to="/login">Log In</router-link>
+  </p>
+
+
+
+
+
 </template>
