@@ -1,6 +1,9 @@
 <template>
-    <div>
 
+    <div>
+        <p> 
+            <h1> Welcome back beotch!</h1>
+        </p>
     </div>
 </template>
 

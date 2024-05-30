@@ -28,6 +28,9 @@ const handleLogin = async () => {
 </script>
 
 <template>
+     
+   
+
   <form class="row flex-center flex" @submit.prevent="handleLogin">
     <div class="col-6 form-widget">
       <h1 class="header">Welcome to Julithane!</h1>
