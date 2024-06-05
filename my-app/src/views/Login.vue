@@ -36,6 +36,7 @@
 
 <script setup>
 import { supabase } from '@/supabase';
+import router from '@/router';
 
 import { onMounted, ref } from 'vue'
 const session = ref()
@@ -71,7 +72,8 @@ const handleLogin = async () => {
   } finally {
     loading.value = false
     console.log('logged in')
-  }
+    router.push({ path: '/about'})
+  } 
 }
 </script>
 
