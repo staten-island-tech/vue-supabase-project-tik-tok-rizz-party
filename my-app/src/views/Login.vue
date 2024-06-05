@@ -8,13 +8,15 @@
     <div class="col-6 form-widget">
      
       <div>
-        <input class="inputField" required type="email" placeholder="Your email" v-model="email" />
+        <input class="inputField" 
+        required type="email" 
+        placeholder="Your email" 
+        v-model="email" />
       </div>
       <div>
         <input
           class="inputField"
-          required
-          type="password"
+          required type="password"
           placeholder="Your password"
           v-model="password"
         />
