@@ -4,12 +4,14 @@ import { supabase } from '../supabase'
 
 const loading = ref(false)
 const email = ref('')
+const password = ref('')
 
 const handleLogin = async () => {
   try {
     loading.value = true
     const { error } = await supabase.auth.signInWithOtp({
       email: email.value,
+      password: password.value
     })
     if (error) throw error
     alert('Check your email for the login link!')
@@ -21,10 +23,6 @@ const handleLogin = async () => {
     loading.value = false
   }
 }
-
-
-
-
 </script>
 
 <template>
@@ -37,6 +35,15 @@ const handleLogin = async () => {
       </div>
       <div>
         <input
+          class="inputField"
+          required
+          type="password"
+          placeholder="Your password"
+          v-model="password"
+        />
+      </div>
+      <div>
+        <input
           type="submit"
           class="button block"
           :value="loading ? 'Loading' : 'Send link'"
@@ -44,15 +51,5 @@ const handleLogin = async () => {
         />
       </div>
     </div>
-   
   </form>
-
-  <p>Already have an account?
-    <router-link to="/login">Log In</router-link>
-  </p>
-
-
-
-
-
 </template>
