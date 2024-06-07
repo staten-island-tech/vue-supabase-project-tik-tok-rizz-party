@@ -1,8 +1,7 @@
 <template>
-  <h1>laisdhf</h1>
+  <h1></h1>
   <div class="container" style="padding: 50px 0 100px 0">
-    <Account v-if="session" :session="session" />
-    <Auth v-else />
+    <Auth />
     <p>
       Already have an account?
       <router-link to="/login">Log In</router-link>
@@ -14,14 +13,17 @@
 import { supabase } from '@/supabase'
 import Auth from '../components/Auth.vue'
 import { onMounted, ref } from 'vue'
-const session = ref()
+import { useStore } from '@/stores/store.js'
+
+const store = useStore()
+
 onMounted(() => {
   supabase.auth.getSession().then(({ data }) => {
-    session.value = data.session
+    store.session = data.session
   })
 
   supabase.auth.onAuthStateChange((_, _session) => {
-    session.value = _session
+    store.session = _session
   })
 })
 </script>

@@ -8,13 +8,15 @@
     <div class="col-6 form-widget">
      
       <div>
-        <input class="inputField" required type="email" placeholder="Your email" v-model="email" />
+        <input class="inputField" 
+        required type="email" 
+        placeholder="Your email" 
+        v-model="email" />
       </div>
       <div>
         <input
           class="inputField"
-          required
-          type="password"
+          required type="password"
           placeholder="Your password"
           v-model="password"
         />
@@ -34,16 +36,21 @@
 
 <script setup>
 import { supabase } from '@/supabase';
+import router from '@/router';
+import {useStore} from '@/stores/store.js'
+const store = useStore()
 
 import { onMounted, ref } from 'vue'
-const session = ref()
+
 onMounted(() => {
   supabase.auth.getSession().then(({ data }) => {
-    session.value = data.session
+    store.session = data.session
+ 
   })
 
   supabase.auth.onAuthStateChange((_, _session) => {
-    session.value = _session
+    store.session = _session
+    console.log(store.session)
   })
 })
 
@@ -69,7 +76,8 @@ const handleLogin = async () => {
   } finally {
     loading.value = false
     console.log('logged in')
-  }
+    router.push({ path: '/about'})
+  } 
 }
 </script>
 
