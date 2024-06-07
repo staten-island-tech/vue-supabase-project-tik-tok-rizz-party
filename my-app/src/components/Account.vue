@@ -1,17 +1,23 @@
 <script setup>
 import { supabase } from '../supabase'
 import { onMounted, ref, toRefs } from 'vue'
+import router from '@/router'
+import { useStore } from '@/stores/store.js'
 
+const store = useStore()
 const props = defineProps(['session'])
 const { session } = toRefs(props)
 
-const loading = ref(true)
+const loading = ref(false)
 const username = ref('')
-const website = ref('')
-const avatar_url = ref('')
+const bio = ref('')
+const avatar = ref('')
+const updating = ref(false)
 
 onMounted(() => {
+ 
   getProfile()
+ 
 })
 
 async function getProfile() {
@@ -20,20 +26,25 @@ async function getProfile() {
     const { user } = session.value
 
     const { data, error, status } = await supabase
-      .from('profiles')
-      .select(`username, website, avatar_url`)
+      .from('users')
+      .select(`username, email, bio, avatar`)
       .eq('id', user.id)
       .single()
 
     if (error && status !== 406) throw error
-
+    console.log(data, user.id)
     if (data) {
-      username.value = data.username
-      website.value = data.website
-      avatar_url.value = data.avatar_url
+      if (data.username == null){
+        username.value = user.email
+      } else {
+        username.value = data.username
+      }
+     
+      bio.value = data.bio
+      avatar.value = data.avatar
     }
   } catch (error) {
-    alert(error.message)
+    console.log(error.message)
   } finally {
     loading.value = false
   }
@@ -47,18 +58,18 @@ async function updateProfile() {
     const updates = {
       id: user.id,
       username: username.value,
-      website: website.value,
-      avatar_url: avatar_url.value,
-      updated_at: new Date(),
+      bio: bio.value,
+      avatar: avatar.value
     }
 
-    const { error } = await supabase.from('profiles').upsert(updates)
+    const { error } = await supabase.from('users').upsert(updates)
 
     if (error) throw error
   } catch (error) {
     alert(error.message)
   } finally {
     loading.value = false
+    updating.value = false
   }
 }
 
@@ -71,6 +82,7 @@ async function signOut() {
     alert(error.message)
   } finally {
     loading.value = false
+    router.push('/')
   }
 }
 </script>
@@ -79,24 +91,33 @@ async function signOut() {
   <form class="form-widget" @submit.prevent="updateProfile">
     <div>
       <label for="email">Email</label>
-      <input id="email" type="text" :value="session.user.email" disabled />
+      <h3>{{ session.user.email }}</h3>
     </div>
     <div>
       <label for="username">Name</label>
-      <input id="username" type="text" v-model="username" />
+      <input id="username" type="text" v-model="username" v-if="updating" />
+      <h3 v-else>{{ username }}</h3>
     </div>
     <div>
-      <label for="website">Website</label>
-      <input id="website" type="url" v-model="website" />
+      <label for="bio">Bio</label>
+      <input id="bio" type="text" v-model="bio" v-if="updating" />
+      <h3 v-else>{{ bio }}</h3>
+
+    </div>
+    <div>
+      <img id="avatar" :src="avatar"></img>
     </div>
 
     <div>
+
       <input
+      v-if="updating"
         type="submit"
         class="button primary block"
         :value="loading ? 'Loading ...' : 'Update'"
         :disabled="loading"
       />
+      <button v-else @click="updating = !updating">Edit account information</button>
     </div>
 
     <div>
@@ -104,3 +125,7 @@ async function signOut() {
     </div>
   </form>
 </template>
+
+<style>
+
+</style>

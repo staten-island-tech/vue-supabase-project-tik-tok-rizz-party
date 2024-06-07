@@ -37,16 +37,20 @@
 <script setup>
 import { supabase } from '@/supabase';
 import router from '@/router';
+import {useStore} from '@/stores/store.js'
+const store = useStore()
 
 import { onMounted, ref } from 'vue'
-const session = ref()
+
 onMounted(() => {
   supabase.auth.getSession().then(({ data }) => {
-    session.value = data.session
+    store.session = data.session
+ 
   })
 
   supabase.auth.onAuthStateChange((_, _session) => {
-    session.value = _session
+    store.session = _session
+    console.log(store.session)
   })
 })
 
